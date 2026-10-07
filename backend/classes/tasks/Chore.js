@@ -5,6 +5,7 @@
  */
 class Chore {
     #task;
+    #category;
     #description;
     #isComplete;
     #taskPoints;
@@ -12,23 +13,28 @@ class Chore {
 
     /**
      * Creates a Chore instance with the input task, description, completion status, and task points.
-     * @param {*} task 
-     * @param {*} description 
-     * @param {*} isComplete 
-     * @param {*} taskPoints 
+     * @param {string} task 
+     * @param {string} category
+     * @param {string} description
+     * @param {bool} isComplete 
+     * @param {int} taskPoints 
+     * @param {Date} dueDate, can be null if no due date is specified.
      */
-    constructor(task, description, isComplete, taskPoints) {
+    constructor(task, category, description, isComplete, taskPoints, dueDate) {
+        this.#category = category;
         this.#task = task;
         this.#description = description;
         this.#isComplete = isComplete;
         this.#taskPoints = taskPoints;
-
-        // Initialize the due date to the current date.
-        this.#dueDate = new Date();
+        this.#dueDate = dueDate;
     }
 
     get task() {
         return this.#task;
+    }
+
+    get category() {
+        return this.#category;
     }
 
     get description() {
@@ -44,6 +50,8 @@ class Chore {
     }
     
     get dueDate() {
+        // dueDate is null, the due date is not specified
+        if (this.#dueDate == null) throw new Error("No due date for chore: " + this.#task);
         return this.#dueDate;
     }
 
@@ -63,13 +71,17 @@ class Chore {
         this.#task = value;
     }
 
+    set category(value) {
+        this.#category = value;
+    }
+
     set description(value) {
         this.#description = value;
     }
 
     /**
      * Returns whether the chore is overdue based on its due date.
-     * @returns {boolean} True if the chore is overdue, false otherwise.
+     * @returns {bool} True if the chore is overdue, false otherwise.
      */
     isOverdue() {
         if (new Date() > this.#dueDate && !this.#isComplete) return true;
@@ -78,7 +90,7 @@ class Chore {
 
     /**
      * Returns the amount of days this chore is overdue.
-     * @returns {number} The number of days the chore is overdue if not complete.
+     * @returns {int} The number of days the chore is overdue if not complete.
      * @returns {-1} If the chore is not overdue.
      */
     daysOverdue() {

@@ -6,11 +6,15 @@ class User {
     #name;
     #totalPoints;
     #numCompletedChores;
+    #numIncompleteChores;
 
-    constructor(name, totalPoints, numCompletedChores) {
+    //#companion; // user's companion object.
+
+    constructor(name, totalPoints, numCompletedChores, numIncompleteChores) {
         this.#name = name;
         this.#totalPoints = totalPoints;
         this.#numCompletedChores = numCompletedChores;
+        this.#numIncompleteChores = numIncompleteChores;
     }
 
     get name() {
@@ -24,6 +28,10 @@ class User {
     get numCompletedChores() {
         return this.#numCompletedChores;
     }
+    
+    get numIncompleteChores() {
+        return this.#numIncompleteChores;
+    }
 
     set name(name) {
         this.#name = name;
@@ -35,5 +43,9 @@ class User {
 
     set numCompletedChores(numCompletedChores) {
         this.#numCompletedChores = numCompletedChores;
+    }
+    
+    set numIncompleteChores(numIncompleteChores) {
+        this.#numIncompleteChores = numIncompleteChores;
     }
 }

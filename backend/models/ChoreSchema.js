@@ -1,10 +1,19 @@
 import { Schema } from "mongoose";
 import mongoose from "mongoose";
 
-const chore = new Schema({
-  task: [
+const choreSchema = new Schema({
+  task: {
+    type: String,
+    required: true,
+  },
+  usersAssigned: [
     {
-      // ownerIds -> type: Schema.Types.ObjectId ; re: "User"
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
   ],
 });
+
+const Chore = mongoose.model("Chore", choreSchema);
+export default Chore;

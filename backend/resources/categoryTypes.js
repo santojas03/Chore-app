@@ -13,4 +13,7 @@ const categoryType = {
   STRENGTH: "strength",
   SOCIAL: "social",
   PRODUCTIVE: "productive",
-  CREATIVE: "creative",};
+  CREATIVE: "creative",
+};
+
+export default categoryType;

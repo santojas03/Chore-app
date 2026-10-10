@@ -70,7 +70,7 @@ function App() {
                 >
                   <use href="/icons.svg#github-icon"></use>
                 </svg>
-                GitHub
+                Test make chore
               </a>
             </li>
             <li>

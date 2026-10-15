@@ -98,3 +98,31 @@ export const leaveHousehold = async (req, res) => {
 
   res.status(204).end();
 };
+
+// POST /api/households/invite-code  (owner only)
+// Replaces the invite code, e.g. if the old one was shared too widely.
+export const regenerateInviteCode = async (req, res) => {
+  const household = req.user.household
+    ? await HouseHold.findById(req.user.household)
+    : null;
+  if (!household) {
+    return res.status(404).json({ message: "You are not in a household" });
+  }
+  if (!household.owner.equals(req.user._id)) {
+    return res
+      .status(403)
+      .json({ message: "Only the household owner can change the invite code" });
+  }
+
+  for (let attempt = 0; ; attempt++) {
+    household.inviteCode = generateInviteCode();
+    try {
+      await household.save();
+      break;
+    } catch (err) {
+      if (err.code !== 11000 || attempt >= 4) throw err;
+    }
+  }
+
+  res.json({ inviteCode: household.inviteCode });
+};

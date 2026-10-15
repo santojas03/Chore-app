@@ -4,6 +4,7 @@ import {
   getMyHousehold,
   joinHousehold,
   leaveHousehold,
+  regenerateInviteCode,
 } from "../controllers/householdController.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 
@@ -15,5 +16,6 @@ router.post("/", createHousehold);
 router.get("/me", getMyHousehold);
 router.post("/join", joinHousehold);
 router.post("/leave", leaveHousehold);
+router.post("/invite-code", regenerateInviteCode);
 
 export default router;

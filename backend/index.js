@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import householdRoutes from "./routes/householdRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 if (!process.env.JWT_SECRET) {
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/households", householdRoutes);
 
 app.use(errorHandler);
 

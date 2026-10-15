@@ -1,4 +1,5 @@
 import HouseHold, { generateInviteCode } from "../models/HouseHoldSchema.js";
+import User from "../models/UserSchema.js";
 
 const MEMBER_FIELDS = "name email";
 
@@ -68,4 +69,32 @@ export const joinHousehold = async (req, res) => {
   await req.user.save();
 
   res.json({ household: await loadHousehold(household._id) });
+};
+
+// POST /api/households/leave
+// If the owner leaves, ownership passes to another member.
+// If the last member leaves, the household is deleted.
+export const leaveHousehold = async (req, res) => {
+  const householdId = req.user.household;
+  if (!householdId) {
+    return res.status(404).json({ message: "You are not in a household" });
+  }
+
+  req.user.household = null;
+  await req.user.save();
+
+  const household = await HouseHold.findById(householdId);
+  if (household) {
+    const nextMember = await User.findOne({ household: householdId }).sort({
+      _id: 1,
+    });
+    if (!nextMember) {
+      await household.deleteOne();
+    } else if (household.owner.equals(req.user._id)) {
+      household.owner = nextMember._id;
+      await household.save();
+    }
+  }
+
+  res.status(204).end();
 };

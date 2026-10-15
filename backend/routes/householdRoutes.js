@@ -3,6 +3,7 @@ import {
   createHousehold,
   getMyHousehold,
   joinHousehold,
+  leaveHousehold,
 } from "../controllers/householdController.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 
@@ -13,5 +14,6 @@ router.use(requireAuth);
 router.post("/", createHousehold);
 router.get("/me", getMyHousehold);
 router.post("/join", joinHousehold);
+router.post("/leave", leaveHousehold);
 
 export default router;

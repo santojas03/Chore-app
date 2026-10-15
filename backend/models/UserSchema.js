@@ -20,7 +20,8 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
+    // Custom message: the default one would echo the plaintext password back.
+    minlength: [8, "Password must be at least 8 characters"],
     select: false, // only loaded when explicitly requested with .select("+password")
   },
   household: {

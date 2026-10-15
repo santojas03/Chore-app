@@ -4,13 +4,13 @@ import mongoose from "mongoose";
 const houseHoldSchema = new Schema({
   userList: [
     {
-      type: SchemaType.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
   choreList: [
     {
-      type: SchemaType.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Chore",
     },
   ],

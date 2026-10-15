@@ -47,3 +47,25 @@ export const getMyHousehold = async (req, res) => {
   }
   res.json({ household });
 };
+
+// POST /api/households/join  { inviteCode }
+export const joinHousehold = async (req, res) => {
+  if (req.user.household) return alreadyInHousehold(res);
+
+  const { inviteCode } = req.body ?? {};
+  if (typeof inviteCode !== "string") {
+    return res.status(400).json({ message: "inviteCode is required" });
+  }
+
+  // Accept "abc-123" or "ABC 123" as well as "ABC123".
+  const code = inviteCode.toUpperCase().replace(/[\s-]/g, "");
+  const household = await HouseHold.findOne({ inviteCode: code });
+  if (!household) {
+    return res.status(404).json({ message: "No household with that invite code" });
+  }
+
+  req.user.household = household._id;
+  await req.user.save();
+
+  res.json({ household: await loadHousehold(household._id) });
+};
